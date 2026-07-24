@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meross Baring | Sunshine Travel Vlogs ☀️</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sunshine: {
+                            50: '#FEFCE8',
+                            100: '#FEF9C3',
+                            200: '#FEF08A',
+                            300: '#FDE047',
+                            400: '#FACC15',
+                            500: '#EAB308',
+                            600: '#CA8A04',
+                            700: '#A16207',
+                        },
+                        amberGlow: '#F59E0B',
+                        warmGold: '#D97706',
+                        softYellow: '#FFFBEB',
+                        warmCream: '#FEF08A'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        handwriting: ['Caveat', 'cursive'],
+                        fun: ['Fredoka', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Canvas Confetti Library for playful submit effect -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Custom playful animations and floating effects */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(2deg); }
+        }
+        @keyframes floatFast {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(-3deg); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(250, 204, 21, 0.5); }
+            50% { box-shadow: 0 0 35px rgba(245, 158, 11, 0.7); }
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .animate-float-slow { animation: floatSlow 5s ease-in-out infinite; }
+        .animate-float-fast { animation: floatFast 3.5s ease-in-out infinite; }
+        .animate-pulse-glow { animation: pulseGlow 2.5s infinite; }
+        .animate-pop-in { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+        .doodle-bg {
+            background-color: #FFFBEB;
+            background-image: radial-gradient(#FACC15 2px, transparent 2px), radial-gradient(#F59E0B 1.5px, #FFFBEB 1.5px);
+            background-size: 48px 48px;
+            background-position: 0 0, 24px 24px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FEFCE8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FACC15;
+            border-radius: 999px;
+            border: 2px solid #FEFCE8;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #EAB308;
+        }
+    </style>
+</head>
+<body class="doodle-bg font-sans text-slate-900 antialiased min-h-screen flex flex-col selection:bg-sunshine-300 selection:text-slate-900">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-40 bg-sunshine-400/95 backdrop-blur-md border-b-4 border-slate-900 shadow-md transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo & Brand -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-12 h-12 bg-slate-900 text-sunshine-300 rounded-2xl flex items-center justify-center font-fun text-2xl font-bold shadow-md group-hover:rotate-12 transition-transform duration-300 border-2 border-slate-900">
+                    <i class="fa-solid fa-sun text-sunshine-400 text-xl"></i>
+                </div>
+                <div>
+                    <span class="font-fun font-bold text-2xl text-slate-900 tracking-wide block leading-none">
+                        MEROSS<span class="text-amber-600 drop-shadow-[0_2px_0_rgba(255,255,255,0.8)]">VLOGS</span> ☀️
+                    </span>
+                    <span class="font-handwriting text-slate-900 font-bold text-lg -mt-1 block">Wanderlust & Sunshine ✨</span>
+                </div>
+            </a>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-3">
+                <button onclick="scrollToProfile()" class="hidden md:flex items-center gap-2 bg-white text-slate-900 px-4 py-2 rounded-xl font-bold text-sm border-2 border-slate-900 hover:bg-sunshine-100 transition-all shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none">
+                    <i class="fa-solid fa-user text-sunshine-600"></i>
+                    About Meross
+                </button>
+
+                <!-- Prominent Upload Trigger Button -->
+                <button onclick="openUploadModal()" class="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-sunshine-300 px-5 py-2.5 rounded-xl font-fun font-bold text-base border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(245,158,11,1)] hover:shadow-[2px_2px_0px_0px_rgba(245,158,11,1)] hover:translate-x-0.5 hover:translate-y-0.5 transition-all">
+                    <i class="fa-solid fa-circle-plus text-xl text-sunshine-400 animate-bounce"></i>
+                    <span>Add Vlog</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Playful Hero Section -->
+        <section class="relative pt-8 pb-10 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                
+                <!-- Floating Decorative Stickers -->
+                <div class="hidden lg:block absolute top-2 left-6 animate-float-slow pointer-events-none">
+                    <span class="bg-sunshine-300 text-slate-900 px-4 py-2 rounded-full font-handwriting font-bold text-xl shadow-lg border-2 border-slate-900 -rotate-12 inline-block">
+                        ☀️ Sunny Adventures! ☕
+                    </span>
+                </div>
+                <div class="hidden lg:block absolute top-8 right-10 animate-float-fast pointer-events-none">
+                    <span class="bg-amber-400 text-slate-900 px-4 py-2 rounded-full font-handwriting font-bold text-xl shadow-lg border-2 border-slate-900 rotate-6 inline-block">
+                        🎥 Travel Vlogs & Memories 💛
+                    </span>
+                </div>
+
+                <div class="text-center max-w-3xl mx-auto">
+                    <div class="inline-flex items-center gap-2 bg-sunshine-200 border-2 border-slate-900 rounded-full px-4 py-1.5 mb-4 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]">
+                        <span class="w-3 h-3 bg-amber-500 rounded-full animate-ping"></span>
+                        <span class="font-fun text-xs font-bold uppercase tracking-wider text-slate-900">✨ Official Travel Channel ☀️</span>
+                    </div>
+
+                    <h1 class="font-fun text-4xl sm:text-6xl font-extrabold text-slate-900 leading-tight mb-4 drop-shadow-sm">
+                        Catching Sunsets & <span class="bg-sunshine-300 px-3 py-1 rounded-2xl border-2 border-slate-900 inline-block rotate-1 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">Creating Memories</span> 🎥
+                    </h1>
+                    
+                    <!-- Exact requested welcome message -->
+                    <p class="text-slate-800 text-lg sm:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+                        Just a slow-traveler documenting everyday moments, hidden gems, and cozy days away from home. I post casual, real-life travel vlogs about life as it happens. Grab a tea and travel along with me!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Card Section -->
+        <section id="profile" class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-br from-sunshine-300 via-yellow-200 to-amber-200 border-4 border-slate-900 rounded-3xl p-6 sm:p-8 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] relative overflow-hidden">
+                
+                <!-- Background Decorative Icons -->
+                <div class="absolute -right-10 -bottom-10 text-sunshine-500/20 text-9xl pointer-events-none select-none">
+                    <i class="fa-solid fa-sun"></i>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center gap-8 relative z-10">
+                    <!-- Profile Picture Frame -->
+                    <div class="relative shrink-0 group">
+                        <div class="w-44 h-44 sm:w-52 sm:h-52 rounded-2xl border-4 border-slate-900 overflow-hidden shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] bg-slate-900 relative">
+                            <img src="profile.jpg" alt="Meross Baring" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/FACC15/1E293B?text=Meross+Baring';">
+                        </div>
+                        <!-- Profile Badge -->
+                        <div class="absolute -bottom-3 -right-3 bg-amber-400 text-slate-900 text-xs font-fun font-bold px-3 py-1.5 rounded-xl border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] rotate-6 flex items-center gap-1">
+                            <i class="fa-solid fa-camera text-slate-900"></i> Creator ☀️
+                        </div>
+                    </div>
+
+                    <!-- Profile Bio Info -->
+                    <div class="flex-grow text-center md:text-left">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-2">
+                            <h2 class="font-fun text-3xl sm:text-4xl font-extrabold text-slate-900">Meross Baring</h2>
+                            <span class="bg-slate-900 text-sunshine-300 text-xs font-bold px-3 py-1 rounded-full border border-slate-900 flex items-center gap-1">
+                                <i class="fa-solid fa-sun text-sunshine-400"></i> Travel Vlogger
+                            </span>
+                        </div>
+
+                        <p class="font-handwriting text-2xl text-slate-900 font-bold mb-3">
+                            "Living life one sunny video and sweet memory at a time! ☕💛"
+                        </p>
+
+                        <p class="text-slate-800 font-medium text-base sm:text-lg mb-6 max-w-2xl">
+                            Hey there! I'm Meross! I travel seeking vibrant cultures, pristine beaches, epic local foods, and cozy everyday moments. Uploading full vlog videos right here for all my fellow wanderers!
+                        </p>
+
+                        <!-- Social Handles & Actions -->
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-3">
+                            <!-- Social Icons -->
+                            <div class="flex items-center gap-3">
+                                <a href="https://www.youtube.com/@%E7%99%BD%E7%BE%8E%E7%8E%B2-d6m" target="_blank" rel="noopener noreferrer" title="YouTube" class="w-10 h-10 bg-white rounded-xl border-2 border-slate-900 flex items-center justify-center text-red-500 hover:bg-red-50 hover:scale-110 transition-all shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
+                                    <i class="fa-brands fa-youtube text-lg"></i>
+                                </a>
+                                <a href="https://www.instagram.com/meimyl.nyx21/" target="_blank" rel="noopener noreferrer" title="Instagram" class="w-10 h-10 bg-white rounded-xl border-2 border-slate-900 flex items-center justify-center text-amber-600 hover:bg-amber-50 hover:scale-110 transition-all shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
+                                    <i class="fa-brands fa-instagram text-lg"></i>
+                                </a>
+                                <a href="https://www.tiktok.com/@merossmyl?_r=1&_t=ZS-98Gn0dIfoFp" target="_blank" rel="noopener noreferrer" title="TikTok" class="w-10 h-10 bg-white rounded-xl border-2 border-slate-900 flex items-center justify-center text-slate-900 hover:bg-slate-100 hover:scale-110 transition-all shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
+                                    <i class="fa-brands fa-tiktok text-lg"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vlog Section Header -->
+        <section id="vlogs" class="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+                <div>
+                    <div class="inline-flex items-center gap-2 text-slate-900 font-handwriting text-2xl font-bold">
+                        <i class="fa-solid fa-sun text-amber-500"></i> My Travel Diary ✨
+                    </div>
+                    <h2 class="font-fun text-3xl sm:text-4xl font-extrabold text-slate-900">
+                        Meross's Travel Vlogs 🎥
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Vlogs Grid Container -->
+            <div id="vlogsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <!-- Dynamic cards injected via JS -->
+            </div>
+
+            <!-- Empty State Message -->
+            <div id="emptyState" class="hidden text-center py-16 bg-white rounded-3xl border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] my-8">
+                <div class="w-20 h-20 bg-sunshine-200 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-slate-900 text-3xl">
+                    <i class="fa-solid fa-video"></i>
+                </div>
+                <h3 class="font-fun text-2xl font-bold text-slate-900 mb-2">No Travel Vlogs Added Yet</h3>
+                <p class="text-slate-600 font-medium mb-6">Click the plus button to share your very first vlog!</p>
+                <button onclick="openUploadModal()" class="bg-slate-900 text-sunshine-300 font-fun font-bold px-6 py-3 rounded-xl border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(245,158,11,1)] hover:translate-x-0.5 hover:translate-y-0.5 transition-all">
+                    <i class="fa-solid fa-plus-circle mr-2 text-sunshine-400"></i> Add Video Vlog
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Video Player Modal -->
+    <div id="videoModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-white rounded-3xl border-4 border-slate-900 shadow-[10px_10px_0px_0px_rgba(250,204,21,1)] max-w-4xl w-full overflow-hidden animate-pop-in relative">
+            
+            <!-- Modal Header -->
+            <div class="bg-sunshine-400 border-b-4 border-slate-900 p-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="w-3 h-3 bg-red-500 rounded-full border border-slate-900"></span>
+                    <span class="w-3 h-3 bg-yellow-400 rounded-full border border-slate-900"></span>
+                    <span class="w-3 h-3 bg-green-500 rounded-full border border-slate-900"></span>
+                    <h3 id="modalVideoTitle" class="font-fun text-lg sm:text-xl font-bold text-slate-900 truncate max-w-md ml-2">Video Title</h3>
+                </div>
+                <button onclick="closeVideoModal()" class="w-10 h-10 bg-white border-2 border-slate-900 rounded-xl flex items-center justify-center text-slate-900 font-bold hover:bg-slate-900 hover:text-white transition-all shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Video Player Frame Container -->
+            <div class="aspect-video w-full bg-slate-950 relative border-b-4 border-slate-900" id="videoContainer">
+                <!-- Iframe or Player element injected dynamically -->
+            </div>
+
+            <!-- Modal Info Footer -->
+            <div class="p-6 bg-sunshine-50">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+                    <!-- Upload Timestamp display -->
+                    <div class="text-xs font-bold text-slate-800 bg-white border-2 border-slate-900 px-3 py-1 rounded-xl shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] flex items-center gap-1.5">
+                        <i class="fa-solid fa-clock text-amber-500"></i>
+                        <span id="modalTimestamp">Uploaded on ...</span>
+                    </div>
+
+                    <!-- External Link Fallback Button -->
+                    <a id="modalExternalLink" href="#" target="_blank" rel="noopener noreferrer" class="text-xs font-fun font-bold text-slate-900 bg-sunshine-300 hover:bg-sunshine-200 border-2 border-slate-900 px-3 py-1.5 rounded-xl shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] flex items-center gap-1.5 transition-all">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-amber-700"></i>
+                        Open Original Video
+                    </a>
+                </div>
+
+                <p id="modalDescription" class="text-slate-700 text-sm font-medium leading-relaxed">
+                    Description goes here...
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Video Modal with Embed Feature -->
+    <div id="uploadModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl border-4 border-slate-900 shadow-[10px_10px_0px_0px_rgba(250,204,21,1)] max-w-xl w-full overflow-hidden animate-pop-in my-8">
+            
+            <!-- Header -->
+            <div class="bg-sunshine-400 border-b-4 border-slate-900 p-5 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-slate-900 text-sunshine-300 rounded-xl flex items-center justify-center font-bold border-2 border-slate-900">
+                        <i class="fa-solid fa-plus text-lg text-sunshine-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-fun text-xl font-bold text-slate-900">Upload Embedded Vlog ☀️</h3>
+                        <p class="text-xs font-bold text-slate-800">Add YouTube link or Embed code</p>
+                    </div>
+                </div>
+                <button onclick="closeUploadModal()" class="w-10 h-10 bg-white border-2 border-slate-900 rounded-xl flex items-center justify-center text-slate-900 font-bold hover:bg-slate-900 hover:text-white transition-all shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Upload Form -->
+            <form id="uploadForm" onsubmit="handleVideoUpload(event)" class="p-6 space-y-4">
+                
+                <!-- Video Title -->
+                <div>
+                    <label class="block text-slate-900 font-fun font-bold text-sm mb-1">Vlog Title *</label>
+                    <input type="text" id="vlogTitle" required placeholder="e.g. Exploring Cozy Cafes & Hidden Alleys ☕" class="w-full px-4 py-2.5 border-2 border-slate-900 rounded-xl text-sm font-medium focus:ring-2 focus:ring-sunshine-400 focus:outline-none shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]">
+                </div>
+
+                <!-- Embed Link or Code -->
+                <div>
+                    <label class="block text-slate-900 font-fun font-bold text-sm mb-1">
+                        YouTube URL or Embed Code * 
+                        <span class="text-xs font-normal text-slate-600">(Supports YouTube URL or iframe)</span>
+                    </label>
+                    <textarea id="vlogEmbed" rows="3" required placeholder="Paste YouTube Link (https://www.youtube.com/watch?v=...) OR raw <iframe> embed code" class="w-full px-4 py-2.5 border-2 border-slate-900 rounded-xl text-sm font-mono focus:ring-2 focus:ring-sunshine-400 focus:outline-none shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]"></textarea>
+                </div>
+
+                <!-- Custom Thumbnail Image (Optional) -->
+                <div>
+                    <label class="block text-slate-900 font-fun font-bold text-sm mb-1">
+                        Thumbnail Image URL <span class="text-xs font-normal text-slate-600">(Optional - auto-generated if YouTube URL)</span>
+                    </label>
+                    <input type="url" id="vlogThumbnail" placeholder="https://images.unsplash.com/photo-..." class="w-full px-4 py-2.5 border-2 border-slate-900 rounded-xl text-sm font-medium focus:ring-2 focus:ring-sunshine-400 focus:outline-none shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]">
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label class="block text-slate-900 font-fun font-bold text-sm mb-1">Short Description</label>
+                    <textarea id="vlogDescription" rows="2" placeholder="Write a quick summary of what happened in this travel vlog..." class="w-full px-4 py-2.5 border-2 border-slate-900 rounded-xl text-sm font-medium focus:ring-2 focus:ring-sunshine-400 focus:outline-none shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-2 flex items-center justify-end gap-3">
+                    <button type="button" onclick="closeUploadModal()" class="px-5 py-2.5 rounded-xl border-2 border-slate-900 font-fun font-bold text-sm hover:bg-slate-100 transition-all">
+                        Cancel
+                    </button>
+                    <button type="submit" class="bg-sunshine-400 hover:bg-sunshine-300 text-slate-900 border-2 border-slate-900 px-6 py-2.5 rounded-xl font-fun font-bold text-base shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up text-slate-900"></i>
+                        Publish Vlog
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Floating Action Button (+) for Quick Upload -->
+    <button onclick="openUploadModal()" title="Upload New Vlog" class="fixed bottom-6 right-6 z-30 w-16 h-16 bg-sunshine-400 hover:bg-sunshine-300 text-slate-900 rounded-full border-4 border-slate-900 shadow-[5px_5px_0px_0px_rgba(15,23,42,1)] hover:scale-110 active:scale-95 transition-all flex items-center justify-center group animate-pulse-glow">
+        <i class="fa-solid fa-plus text-3xl group-hover:rotate-90 transition-transform duration-300"></i>
+    </button>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed bottom-6 left-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Footer Section -->
+    <footer class="mt-16 bg-slate-900 text-white border-t-4 border-slate-900 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-sunshine-400 text-slate-900 rounded-xl flex items-center justify-center font-fun text-xl font-bold border-2 border-white">
+                    <i class="fa-solid fa-sun text-slate-900"></i>
+                </div>
+                <span class="font-fun text-2xl font-bold tracking-wide">Meross Baring Travel Channel ☀️</span>
+            </div>
+            <p class="text-slate-400 text-sm max-w-md mx-auto mb-6">
+                Capturing sweet memories, exploring cultures, and spreading warmth across the world.
+            </p>
+            <div class="text-xs text-slate-500 border-t border-slate-800 pt-6">
+                &copy; <span id="year"></span> Meross Baring Travel Vlogs. All rights reserved. Made with ☀️ & ☕.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample Initial Travel Vlogs
+        const initialVlogs = [
+            {
+                id: 'vlog-1',
+                title: 'Cozy Days & Sunset Walks in El Nido Palawan 🌅',
+                embedUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+                thumbnail: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+                description: 'A gentle island vlog taking slow walks along secret beaches and capturing golden hour sunsets.',
+                timestamp: 'Jul 10, 2026, 04:30 PM'
+            },
+            {
+                id: 'vlog-2',
+                title: 'Exploring Cafe Culture & Hidden Alleys in Kyoto ☕',
+                embedUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+                thumbnail: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80',
+                description: 'Spending quiet mornings discovering matcha tea shops, traditional wooden houses, and peaceful gardens.',
+                timestamp: 'Jun 28, 2026, 10:15 AM'
+            }
+        ];
+
+        let vlogsList = [];
+
+        // Load Vlogs on Init
+        document.addEventListener('DOMContentLoaded', () => {
+            loadVlogs();
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
+
+        function loadVlogs() {
+            const stored = localStorage.getItem('meross_vlogs_yellow_v1');
+            if (stored) {
+                try {
+                    vlogsList = JSON.parse(stored);
+                } catch (e) {
+                    vlogsList = [...initialVlogs];
+                }
+            } else {
+                vlogsList = [...initialVlogs];
+                saveVlogs();
+            }
+            renderVlogs();
+        }
+
+        function saveVlogs() {
+            localStorage.setItem('meross_vlogs_yellow_v1', JSON.stringify(vlogsList));
+        }
+
+        // Render Vlogs Grid
+        function renderVlogs() {
+            const grid = document.getElementById('vlogsGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            if (!vlogsList || vlogsList.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = vlogsList.map(vlog => `
+                <div class="bg-white rounded-2xl border-4 border-slate-900 overflow-hidden shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:shadow-[8px_8px_0px_0px_rgba(245,158,11,1)] hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+                    
+                    <!-- Video Thumbnail Frame -->
+                    <div class="relative aspect-video bg-slate-900 overflow-hidden cursor-pointer" onclick="openVideoModal('${vlog.id}')">
+                        <img src="${escapeHtml(vlog.thumbnail)}" alt="${escapeHtml(vlog.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80';">
+                        
+                        <!-- Overlay Play Button -->
+                        <div class="absolute inset-0 bg-slate-900/30 group-hover:bg-slate-900/10 transition-colors flex items-center justify-center">
+                            <div class="w-14 h-14 bg-sunshine-400 text-slate-900 rounded-full border-2 border-slate-900 flex items-center justify-center text-xl shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-play ml-1"></i>
+                            </div>
+                        </div>
+
+                        <!-- Date Badge -->
+                        <div class="absolute bottom-3 left-3 bg-slate-900/90 backdrop-blur-md text-sunshine-300 text-xs font-bold px-3 py-1 rounded-xl border border-slate-900 flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-clock text-amber-400"></i> ${escapeHtml(vlog.timestamp)}
+                        </div>
+                    </div>
+
+                    <!-- Vlog Details -->
+                    <div class="p-5 flex flex-col flex-grow bg-gradient-to-b from-white to-sunshine-50/50">
+                        <h3 class="font-fun text-xl font-bold text-slate-900 mb-2 line-clamp-2 hover:text-amber-600 transition-colors cursor-pointer" onclick="openVideoModal('${vlog.id}')">
+                            ${escapeHtml(vlog.title)}
+                        </h3>
+
+                        <p class="text-slate-600 text-sm font-medium line-clamp-2 mb-4 flex-grow">
+                            ${escapeHtml(vlog.description || 'Watch my travel adventure!')}
+                        </p>
+
+                        <!-- Actions Bar -->
+                        <div class="pt-3 border-t-2 border-dashed border-sunshine-200 flex items-center justify-between mt-auto">
+                            <button onclick="openVideoModal('${vlog.id}')" class="bg-sunshine-400 hover:bg-sunshine-300 text-slate-900 px-4 py-2 rounded-xl font-fun font-bold text-xs border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] active:translate-x-0.5 active:translate-y-0.5 transition-all flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-play"></i> Watch Vlog
+                            </button>
+
+                            <button onclick="deleteVlog('${vlog.id}')" title="Delete Vlog" class="w-8 h-8 rounded-lg border-2 border-slate-900 text-slate-400 hover:text-red-500 hover:border-red-500 flex items-center justify-center transition-all text-xs">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Parse YouTube URL or Embed iframe code
+        function parseEmbedCodeOrUrl(input) {
+            let embedUrl = '';
+            let raw = '';
+            let autoThumbnail = '';
+            let videoId = '';
+
+            // Check if full iframe snippet pasted
+            if (input.includes('<iframe')) {
+                raw = input;
+                const srcMatch = input.match(/src=["']([^"']+)["']/);
+                if (srcMatch && srcMatch[1]) {
+                    embedUrl = srcMatch[1];
+                }
+            } else {
+                // Parse YouTube Shorts, standard watch URLs, mobile URLs, or embed links
+                if (input.includes('/shorts/')) {
+                    videoId = input.split('/shorts/')[1]?.split('?')[0]?.split('&')[0];
+                } else if (input.includes('youtube.com/watch?v=')) {
+                    videoId = input.split('v=')[1]?.split('&')[0];
+                } else if (input.includes('youtu.be/')) {
+                    videoId = input.split('youtu.be/')[1]?.split('?')[0];
+                } else if (input.includes('youtube.com/embed/')) {
+                    videoId = input.split('youtube.com/embed/')[1]?.split('?')[0];
+                }
+
+                if (videoId) {
+                    embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                    autoThumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                } else {
+                    embedUrl = input; // fallback raw url
+                }
+            }
+
+            return { embedUrl, raw, autoThumbnail };
+        }
+
+        // Handle Vlog Upload Form Submit
+        function handleVideoUpload(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('vlogTitle').value.trim();
+            const embedInput = document.getElementById('vlogEmbed').value.trim();
+            let thumbnail = document.getElementById('vlogThumbnail').value.trim();
+            const description = document.getElementById('vlogDescription').value.trim();
+
+            const parsed = parseEmbedCodeOrUrl(embedInput);
+
+            // Auto-assign thumbnail if YouTube link and no custom URL
+            if (!thumbnail && parsed.autoThumbnail) {
+                thumbnail = parsed.autoThumbnail;
+            } else if (!thumbnail) {
+                thumbnail = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80';
+            }
+
+            // Format current Date and Time
+            const now = new Date();
+            const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            const formattedDateTime = now.toLocaleDateString('en-US', options);
+
+            const newVlog = {
+                id: 'vlog-' + Date.now(),
+                title: title,
+                embedUrl: parsed.embedUrl,
+                embedRaw: parsed.raw,
+                thumbnail: thumbnail,
+                description: description,
+                timestamp: formattedDateTime
+            };
+
+            // Add to top of list
+            vlogsList.unshift(newVlog);
+            saveVlogs();
+            renderVlogs();
+
+            // Trigger Yellow & Gold Confetti Celebration!
+            if (window.confetti) {
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#FACC15', '#FEF08A', '#F59E0B', '#EAB308']
+                });
+            }
+
+            showToast('☀️ Travel vlog published successfully! ✨');
+            closeUploadModal();
+            document.getElementById('uploadForm').reset();
+
+            // Smooth scroll to vlogs
+            document.getElementById('vlogs').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Open Video Modal
+        function openVideoModal(id) {
+            const vlog = vlogsList.find(v => v.id === id);
+            if (!vlog) return;
+
+            document.getElementById('modalVideoTitle').textContent = vlog.title;
+            document.getElementById('modalTimestamp').textContent = `Uploaded on ${vlog.timestamp}`;
+            document.getElementById('modalDescription').textContent = vlog.description || 'No description provided.';
+            
+            // Set external fallback link
+            const extLink = document.getElementById('modalExternalLink');
+            extLink.href = vlog.embedUrl || '#';
+
+            const container = document.getElementById('videoContainer');
+            
+            // Insert embed iframe safely
+            if (vlog.embedRaw) {
+                container.innerHTML = vlog.embedRaw;
+                const iframe = container.querySelector('iframe');
+                if (iframe) {
+                    iframe.className = 'w-full h-full border-0';
+                }
+            } else {
+                container.innerHTML = `<iframe src="${vlog.embedUrl}" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            }
+
+            const modal = document.getElementById('videoModal');
+            modal.classList.remove('hidden');
+        }
+
+        // Close Video Modal
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            modal.classList.add('hidden');
+            // Clear iframe so audio stops
+            document.getElementById('videoContainer').innerHTML = '';
+        }
+
+        // Open Upload Modal
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.remove('hidden');
+        }
+
+        // Close Upload Modal
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.add('hidden');
+        }
+
+        // Delete Vlog
+        function deleteVlog(id) {
+            vlogsList = vlogsList.filter(v => v.id !== id);
+            saveVlogs();
+            renderVlogs();
+            showToast('🗑️ Vlog removed.');
+        }
+
+        // Scroll to Profile
+        function scrollToProfile() {
+            document.getElementById('profile').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Custom Toast Notification System
+        function showToast(message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'bg-slate-900 text-white font-fun font-bold px-4 py-3 rounded-2xl border-2 border-sunshine-400 shadow-[4px_4px_0px_0px_rgba(245,158,11,1)] flex items-center gap-2 text-sm animate-pop-in pointer-events-auto';
+            toast.innerHTML = message;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Utility: HTML Escaping
+        function escapeHtml(str) {
+            return str ? str.replace(/[&<>"']/g, function(m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                }[m];
+            }) : '';
+        }
+    </script>
+</body>
+</html>
